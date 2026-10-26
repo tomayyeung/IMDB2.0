@@ -25,12 +25,14 @@ An intelligent movie recommendation system that analyzes movie trailers using Op
 
 ```
 IMDB2.0/
-├── frontend/                 # React application
-│   ├── src/
-│   │   ├── components/      # React components
-│   │   └── styles/          # CSS stylesheets
-│   ├── package.json
-│   └── README.md
+├── src/                     # React application
+│   ├── components/          # React components
+│   └── styles/              # CSS stylesheets
+├── Data/
+│   └── trailer_db/          # ChromaDB vector database
+├── index.html               # Frontend entry point
+├── package.json             # Frontend dependencies
+├── vite.config.js           # Vite dev server (proxies /api to backend)
 ├── backend_api.py           # Flask API server
 ├── initial.ipynb            # CLIP model exploration
 ├── requirements.txt         # Python dependencies
@@ -57,24 +59,14 @@ IMDB2.0/
    pip install -r requirements.txt
    ```
 
-3. Create directories for trailers:
-   ```bash
-   mkdir -p trailers thumbnails
-   ```
-
-4. Add your movie trailers to the `trailers/` directory
+The pre-built vector database is included in `Data/trailer_db/`, so no trailer files are needed to run the app.
 
 ### Frontend Setup
 
-1. Navigate to frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+From the project root, install dependencies:
+```bash
+npm install
+```
 
 ## Running the Application
 
@@ -86,12 +78,13 @@ python backend_api.py
 
 The API will be available at `http://localhost:5000`
 
+> **macOS:** if port 5000 is already in use, turn off AirPlay Receiver (System Settings → General → AirDrop & Handoff).
+
 ### Start Frontend Development Server
 
-In a new terminal:
+In a new terminal, from the project root:
 
 ```bash
-cd frontend
 npm run dev
 ```
 

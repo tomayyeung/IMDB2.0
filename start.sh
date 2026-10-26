@@ -9,8 +9,8 @@ cd "$(dirname "$0")"
 echo "Starting backend…"
 # Optional: use venv if it exists
 if [ -d "venv" ]; then
-    source Data/venv/bin/activate
-    echo "used Data venv"
+    source venv/bin/activate
+    echo "used venv"
 fi
 
 python3 backend_api.py &
@@ -23,8 +23,8 @@ FRONTEND_PID=$!
 echo ""
 echo "--------------------------------"
 echo "CineAI running:"
-echo "  Backend:  http://localhost:5001"
-echo "  Frontend: http://localhost:5173"
+echo "  Backend:  http://localhost:5000"
+echo "  Frontend: http://localhost:3000"
 echo "Press Ctrl+C to stop both."
 echo "--------------------------------"
 echo ""
