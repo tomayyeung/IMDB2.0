@@ -10,6 +10,7 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import os
 import json
+import threading
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -39,11 +40,14 @@ except Exception as e:
 # Load text model for search queries
 print("Loading text model...")
 try:
-    text_model = SentenceTransformer('all-MiniLM-L6-v2')
+    # Force CPU: PyTorch's MPS (Apple GPU) backend segfaults when Flask's
+    # request threads call encode() concurrently
+    text_model = SentenceTransformer('all-MiniLM-L6-v2', device='cpu')
     print("✓ Models loaded successfully")
 except Exception as e:
     print(f"❌ Error loading text model: {e}")
     text_model = None
+text_model_lock = threading.Lock()
 
 # Load CSV data for movie metadata
 movies_data = {}
@@ -624,7 +628,8 @@ def search_movies():
 
     try:
         # Encode the search query
-        query_embedding = text_model.encode(query)
+        with text_model_lock:
+            query_embedding = text_model.encode(query)
 
         # Search in the narrative collection
         results = nar_collection.query(
